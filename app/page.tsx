@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function Home() {
   const [idea, setIdea] = useState("");
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
