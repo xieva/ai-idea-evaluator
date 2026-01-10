@@ -8,9 +8,13 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    if (!idea) return alert("사업 아이디어를 입력하세요");
-    setLoading(true);
+  if (!idea) return alert("사업 아이디어를 입력하세요");
 
+  setLoading(true);
+  setError(null);
+  setResult(null);
+
+  try {
     const res = await fetch("/api/evaluate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -18,9 +22,21 @@ export default function Home() {
     });
 
     const data = await res.json();
+
+    if (!res.ok) {
+      // 서버가 {error, detail}로 주는 경우를 그대로 보여줌
+      setError(`${data?.error ?? "에러"}${data?.detail ? `\n${data.detail}` : ""}`);
+      setLoading(false);
+      return;
+    }
+
     setResult(data);
+  } catch (e: any) {
+    setError(`네트워크/브라우저 오류: ${String(e?.message ?? e)}`);
+  } finally {
     setLoading(false);
-  };
+  }
+};
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-6 gap-6">
