@@ -84,6 +84,6 @@ ${idea}
 
     return json(parsed, 200);
   } catch (e: any) {
-    return json({ error: "서버 처리 중 오류", detail: String(e?.message ?? e) }, 500);
-  }
+  console.error("EVALUATE_ERROR:", e);
+  return json({ error: "서버 처리 중 오류", detail: String(e?.message ?? e) }, 500);
 }
